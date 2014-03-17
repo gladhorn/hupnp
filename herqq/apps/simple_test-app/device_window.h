@@ -27,7 +27,7 @@
 #include <HUpnpCore/HServerDevice>
 #include <HUpnpCore/HServerService>
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
 namespace Ui {
     class DeviceWindow;

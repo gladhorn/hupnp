@@ -26,7 +26,7 @@
 #include <HUpnpCore/HUpnp>
 
 #include <QModelIndex>
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
 class DataItemDisplay;
 class ControlPointNavigator;

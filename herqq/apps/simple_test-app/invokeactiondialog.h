@@ -30,7 +30,7 @@
 
 #include <QHash>
 #include <QtCore/QString>
-#include <QtGui/QDialog>
+#include <QDialog>
 
 struct QUuid;
 

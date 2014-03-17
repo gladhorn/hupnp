@@ -95,7 +95,13 @@ public:
 
     inline HUdn udn() const { return m_udn; }
 
-    inline qint32 completionValue() const { return m_completionValue; }
+    inline qint32 completionValue() const {
+#if QT_VERSION < QT_VERSION_CHECK(5, 0, 0)
+        return m_completionValue;
+#else
+        return m_completionValue.load();
+#endif
+    }
 
     inline QString errorString() const { return m_errorString; }
     // returns an error description only if something went wrong

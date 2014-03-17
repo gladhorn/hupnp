@@ -51,6 +51,7 @@ DataItemDisplay::NavItemVisitor::~NavItemVisitor()
 void DataItemDisplay::NavItemVisitor::visit(ActionItem* item)
 {
     Q_ASSERT(item);
+    m_owner->beginResetModel();
     m_owner->m_modelData.clear();
 
     HClientAction* action = item->action();
@@ -59,7 +60,6 @@ void DataItemDisplay::NavItemVisitor::visit(ActionItem* item)
         rootDevice()->info().udn();
 
     m_owner->m_modelData.clear();
-    m_owner->reset();
 
     m_owner->m_modelData.push_back(qMakePair(
         QString("Name"), action->info().name()));
@@ -76,12 +76,13 @@ void DataItemDisplay::NavItemVisitor::visit(ActionItem* item)
         QString("Return argument name"),
         action->info().returnArgumentName()));
 
-    m_owner->reset();
+    m_owner->endResetModel();
 }
 
 void DataItemDisplay::NavItemVisitor::visit(ServiceItem* item)
 {
     Q_ASSERT(item);
+    m_owner->beginResetModel();
     m_owner->m_modelData.clear();
 
     HClientService* service = item->service();
@@ -104,13 +105,14 @@ void DataItemDisplay::NavItemVisitor::visit(ServiceItem* item)
     m_owner->m_modelData.push_back(qMakePair(
         QString("Control URL"), service->info().controlUrl().toString()));
 
-    m_owner->reset();
+    m_owner->endResetModel();
 }
 
 void DataItemDisplay::NavItemVisitor::visit(DeviceItem* item)
 {
     Q_ASSERT(item);
 
+    m_owner->beginResetModel();
     m_owner->m_modelData.clear();
 
     HClientDevice* device = item->device();
@@ -142,13 +144,14 @@ void DataItemDisplay::NavItemVisitor::visit(DeviceItem* item)
                 locations.at(i).toString()));
     }
 
-    m_owner->reset();
+    m_owner->endResetModel();
 }
 
 void DataItemDisplay::NavItemVisitor::visit(StateVariableItem* item)
 {
     Q_ASSERT(item);
 
+    m_owner->beginResetModel();
     m_owner->m_modelData.clear();
 
     const HClientStateVariable* stateVar = item->stateVariable();
@@ -180,7 +183,7 @@ void DataItemDisplay::NavItemVisitor::visit(StateVariableItem* item)
     m_owner->m_modelData.push_back(
         qMakePair(QString("Allowed values"), stateVar->info().allowedValueList().join(";")));
 
-    m_owner->reset();
+    m_owner->endResetModel();
 }
 
 DataItemDisplay::DataItemDisplay(QObject* parent) :
@@ -202,8 +205,9 @@ void DataItemDisplay::deviceRemoved(const Herqq::Upnp::HUdn& udn)
 {
     if (udn == m_rootDeviceUdn)
     {
+        beginResetModel();
         m_modelData.clear();
-        reset();
+        endResetModel();
     }
 }
 

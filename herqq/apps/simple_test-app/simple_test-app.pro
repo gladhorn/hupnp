@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET   = HUpnpSimpleTestApp
-QT      += network testlib xml
+QT      += network testlib xml widgets
 CONFIG  += warn_on
 
 INCLUDEPATH += ../../hupnp/include
