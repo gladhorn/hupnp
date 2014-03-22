@@ -85,7 +85,7 @@ HAvControlPointPrivate::~HAvControlPointPrivate()
 }
 
 bool HAvControlPointPrivate::acceptResource(
-    const HDiscoveryType& usn, const HEndpoint& /*source*/)
+    const HDiscoveryType& /*usn*/, const HEndpoint& /*source*/)
 {
     return true;
 }

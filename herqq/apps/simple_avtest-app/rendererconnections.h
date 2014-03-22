@@ -137,55 +137,55 @@ public:
 //
 //
 //
-class DefaultRendererConnection :
-    public CustomRendererConnection
-{
-Q_OBJECT
-Q_DISABLE_COPY(DefaultRendererConnection)
+//class DefaultRendererConnection :
+//    public CustomRendererConnection
+//{
+//Q_OBJECT
+//Q_DISABLE_COPY(DefaultRendererConnection)
 
-private:
+//private:
 
-    Phonon::MediaObject m_mediaObject;
-    QScopedPointer<Phonon::MediaSource> m_mediaSource;
-    Phonon::VideoWidget* m_videoWidget;
+//    Phonon::MediaObject m_mediaObject;
+//    QScopedPointer<Phonon::MediaSource> m_mediaSource;
+//    Phonon::VideoWidget* m_videoWidget;
 
-private:
+//private:
 
-    void setupVideo();
+//    void setupVideo();
 
-private Q_SLOTS:
+//private Q_SLOTS:
 
-    void hasVideoChanged(bool);
-    void stateChanged(Phonon::State newstate, Phonon::State oldstate);
-    void tick(qint64 time);
-    void totalTimeChanged(qint64 time);
+//    void hasVideoChanged(bool);
+//    void stateChanged(Phonon::State newstate, Phonon::State oldstate);
+//    void tick(qint64 time);
+//    void totalTimeChanged(qint64 time);
 
-protected:
+//protected:
 
-    virtual qint32 doPlay(const QString& arg);
-    virtual qint32 doStop();
-    virtual qint32 doPause();
+//    virtual qint32 doPlay(const QString& arg);
+//    virtual qint32 doStop();
+//    virtual qint32 doPause();
 
-    virtual qint32 doSeek(const Herqq::Upnp::Av::HSeekInfo& seekInfo);
-    virtual qint32 doNext();
-    virtual qint32 doPrevious();
+//    virtual qint32 doSeek(const Herqq::Upnp::Av::HSeekInfo& seekInfo);
+//    virtual qint32 doNext();
+//    virtual qint32 doPrevious();
 
-    virtual qint32 doSetResource(
-        const QUrl& resourceUri, Herqq::Upnp::Av::HObject* cdsObjectData = 0);
+//    virtual qint32 doSetResource(
+//        const QUrl& resourceUri, Herqq::Upnp::Av::HObject* cdsObjectData = 0);
 
-    virtual qint32 doSelectPreset(const QString& presetName);
+//    virtual qint32 doSelectPreset(const QString& presetName);
 
-public:
+//public:
 
-    enum ContentType
-    {
-        AudioOnly,
-        AudioVideo,
-        Unknown
-    };
+//    enum ContentType
+//    {
+//        AudioOnly,
+//        AudioVideo,
+//        Unknown
+//    };
 
-    explicit DefaultRendererConnection(ContentType, QWidget* parent = 0);
-    virtual ~DefaultRendererConnection();
-};
+//    explicit DefaultRendererConnection(ContentType, QWidget* parent = 0);
+//    virtual ~DefaultRendererConnection();
+//};
 
 #endif // RENDERERCONNECTIONS_H_

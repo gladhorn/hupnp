@@ -55,7 +55,7 @@ bool isText(const QString& contentFormat)
 MediaRendererConnectionWindow::MediaRendererConnectionWindow(
     const QString& contentFormat, QNetworkAccessManager& nam, QWidget* parent) :
         QWidget(parent),
-            ui(new Ui::MediaRendererConnectionWindow()), m_rendererConnection(0),
+            ui(new Ui::MediaRendererConnectionWindow()), // m_rendererConnection(0),
             m_nam(nam)
 {
     ui->setupUi(this);
