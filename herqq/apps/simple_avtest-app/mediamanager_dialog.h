@@ -26,7 +26,7 @@
 #include <HUpnpAv/HUpnpAv>
 #include <HUpnpCore/HClientAdapterOp>
 
-#include <QtGui/QDialog>
+#include <QDialog>
 
 namespace Ui {
     class MediaManagerDialog;

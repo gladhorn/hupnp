@@ -27,17 +27,14 @@
 #include <HUpnpAv/HMediaInfo>
 #include <HUpnpAv/HTransportState>
 
-#include <phonon/VideoWidget>
-#include <phonon/AudioOutput>
-
 #include <QtCore/QUrl>
 #include <QtCore/QTime>
 #include <QtCore/QtDebug>
 #include <QtCore/QBuffer>
 
 #include <QtGui/QPixmap>
-#include <QtGui/QTextEdit>
-#include <QtGui/QVBoxLayout>
+#include <QTextEdit>
+#include <QVBoxLayout>
 #include <QtGui/QResizeEvent>
 
 #include <QtNetwork/QNetworkReply>
@@ -45,8 +42,6 @@
 
 using namespace Herqq::Upnp;
 using namespace Herqq::Upnp::Av;
-
-using namespace Phonon;
 
 /*******************************************************************************
  * CustomRendererConnection
@@ -219,241 +214,241 @@ void RendererConnectionForImagesAndText::resizeEventOccurred(const QResizeEvent&
 /*******************************************************************************
  * DefaultRendererConnection
  *******************************************************************************/
-DefaultRendererConnection::DefaultRendererConnection(ContentType ct, QWidget* parent) :
-    CustomRendererConnection(parent),
-        m_mediaObject(parent), m_mediaSource(0), m_videoWidget(0)
-{
-    bool ok = connect(
-        &m_mediaObject,
-        SIGNAL(stateChanged(Phonon::State, Phonon::State)),
-        this,
-        SLOT(stateChanged(Phonon::State, Phonon::State)));
+//DefaultRendererConnection::DefaultRendererConnection(ContentType ct, QWidget* parent) :
+//    CustomRendererConnection(parent),
+//        m_mediaObject(parent), m_mediaSource(0), m_videoWidget(0)
+//{
+//    bool ok = connect(
+//        &m_mediaObject,
+//        SIGNAL(stateChanged(Phonon::State, Phonon::State)),
+//        this,
+//        SLOT(stateChanged(Phonon::State, Phonon::State)));
 
-    Q_ASSERT(ok); Q_UNUSED(ok)
+//    Q_ASSERT(ok); Q_UNUSED(ok)
 
-    ok = connect(
-        &m_mediaObject,
-        SIGNAL(tick(qint64)),
-        this,
-        SLOT(tick(qint64)));
+//    ok = connect(
+//        &m_mediaObject,
+//        SIGNAL(tick(qint64)),
+//        this,
+//        SLOT(tick(qint64)));
 
-    Q_ASSERT(ok); Q_UNUSED(ok)
+//    Q_ASSERT(ok); Q_UNUSED(ok)
 
-    ok = connect(
-        &m_mediaObject,
-        SIGNAL(totalTimeChanged(qint64)),
-        this,
-        SLOT(totalTimeChanged(qint64)));
+//    ok = connect(
+//        &m_mediaObject,
+//        SIGNAL(totalTimeChanged(qint64)),
+//        this,
+//        SLOT(totalTimeChanged(qint64)));
 
-    Q_ASSERT(ok); Q_UNUSED(ok)
+//    Q_ASSERT(ok); Q_UNUSED(ok)
 
-    m_mediaObject.setTickInterval(1000);
+//    m_mediaObject.setTickInterval(1000);
 
-    if (ct == AudioVideo)
-    {
-        setupVideo();
-    }
+//    if (ct == AudioVideo)
+//    {
+//        setupVideo();
+//    }
 
-    AudioOutput* audioOutput = new AudioOutput(VideoCategory, parent);
-    createPath(&m_mediaObject, audioOutput);
-}
+//    AudioOutput* audioOutput = new AudioOutput(VideoCategory, parent);
+//    createPath(&m_mediaObject, audioOutput);
+//}
 
-DefaultRendererConnection::~DefaultRendererConnection()
-{
-}
+//DefaultRendererConnection::~DefaultRendererConnection()
+//{
+//}
 
-void DefaultRendererConnection::setupVideo()
-{
-    QWidget* parentWidget = static_cast<QWidget*>(parent());
+//void DefaultRendererConnection::setupVideo()
+//{
+//    QWidget* parentWidget = static_cast<QWidget*>(parent());
 
-    m_videoWidget = new VideoWidget(parentWidget);
-    m_videoWidget->setMinimumSize(200, 200);
-    m_videoWidget->setSizePolicy(
-        QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+//    m_videoWidget = new VideoWidget(parentWidget);
+//    m_videoWidget->setMinimumSize(200, 200);
+//    m_videoWidget->setSizePolicy(
+//        QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    createPath(&m_mediaObject, m_videoWidget);
+//    createPath(&m_mediaObject, m_videoWidget);
 
-    parentWidget->layout()->addWidget(m_videoWidget);
-}
+//    parentWidget->layout()->addWidget(m_videoWidget);
+//}
 
-void DefaultRendererConnection::tick(qint64 time)
-{
-    QTime tmp;
-    tmp = tmp.addMSecs(time);
-    HDuration position(tmp);
-    writableRendererConnectionInfo()->setRelativeTimePosition(position);
-}
+//void DefaultRendererConnection::tick(qint64 time)
+//{
+//    QTime tmp;
+//    tmp = tmp.addMSecs(time);
+//    HDuration position(tmp);
+//    writableRendererConnectionInfo()->setRelativeTimePosition(position);
+//}
 
-void DefaultRendererConnection::totalTimeChanged(qint64 time)
-{
-    QTime tmp;
-    tmp = tmp.addMSecs(time);
-    HDuration duration(tmp);
-    writableRendererConnectionInfo()->setCurrentTrackDuration(duration);
-}
+//void DefaultRendererConnection::totalTimeChanged(qint64 time)
+//{
+//    QTime tmp;
+//    tmp = tmp.addMSecs(time);
+//    HDuration duration(tmp);
+//    writableRendererConnectionInfo()->setCurrentTrackDuration(duration);
+//}
 
-void DefaultRendererConnection::stateChanged(
-    Phonon::State newstate, Phonon::State oldstate)
-{
-    Q_UNUSED(oldstate)
-    switch(newstate)
-    {
-    case Phonon::ErrorState:
-        {
-            QString descr = m_mediaObject.errorString();
-            qDebug() << descr;
-        }
-        break;
+//void DefaultRendererConnection::stateChanged(
+//    Phonon::State newstate, Phonon::State oldstate)
+//{
+//    Q_UNUSED(oldstate)
+//    switch(newstate)
+//    {
+//    case Phonon::ErrorState:
+//        {
+//            QString descr = m_mediaObject.errorString();
+//            qDebug() << descr;
+//        }
+//        break;
 
-    case Phonon::PlayingState:
-        if (m_mediaObject.currentTime() == m_mediaObject.totalTime())
-        {
-            if (m_mediaObject.isSeekable())
-            {
-                m_mediaObject.seek(0);
-            }
-            m_mediaObject.play();
-        }
-        writableRendererConnectionInfo()->setTransportState(HTransportState::Playing);
-        break;
+//    case Phonon::PlayingState:
+//        if (m_mediaObject.currentTime() == m_mediaObject.totalTime())
+//        {
+//            if (m_mediaObject.isSeekable())
+//            {
+//                m_mediaObject.seek(0);
+//            }
+//            m_mediaObject.play();
+//        }
+//        writableRendererConnectionInfo()->setTransportState(HTransportState::Playing);
+//        break;
 
-    case Phonon::StoppedState:
-        if (m_mediaObject.isSeekable())
-        {
-            m_mediaObject.seek(0);
-        }
-        writableRendererConnectionInfo()->setTransportState(HTransportState::Stopped);
-        break;
+//    case Phonon::StoppedState:
+//        if (m_mediaObject.isSeekable())
+//        {
+//            m_mediaObject.seek(0);
+//        }
+//        writableRendererConnectionInfo()->setTransportState(HTransportState::Stopped);
+//        break;
 
-    case Phonon::PausedState:
-        if (oldstate == Phonon::PlayingState &&
-            m_mediaObject.currentTime() == m_mediaObject.totalTime())
-        {
-            if (m_mediaObject.isSeekable())
-            {
-                m_mediaObject.seek(0);
-            }
-        }
+//    case Phonon::PausedState:
+//        if (oldstate == Phonon::PlayingState &&
+//            m_mediaObject.currentTime() == m_mediaObject.totalTime())
+//        {
+//            if (m_mediaObject.isSeekable())
+//            {
+//                m_mediaObject.seek(0);
+//            }
+//        }
 
-        writableRendererConnectionInfo()->setTransportState(HTransportState::PausedPlayback);
-        break;
+//        writableRendererConnectionInfo()->setTransportState(HTransportState::PausedPlayback);
+//        break;
 
-    case Phonon::LoadingState:
-        writableRendererConnectionInfo()->setTransportState(HTransportState::Transitioning);
-        break;
+//    case Phonon::LoadingState:
+//        writableRendererConnectionInfo()->setTransportState(HTransportState::Transitioning);
+//        break;
 
-    case Phonon::BufferingState:
-        writableRendererConnectionInfo()->setTransportState(HTransportState::Transitioning);
-        break;
+//    case Phonon::BufferingState:
+//        writableRendererConnectionInfo()->setTransportState(HTransportState::Transitioning);
+//        break;
 
-    default:
-        m_mediaObject.play();
-        break;
-    }
-}
+//    default:
+//        m_mediaObject.play();
+//        break;
+//    }
+//}
 
-qint32 DefaultRendererConnection::doPlay(const QString& arg)
-{
-    Q_UNUSED(arg)
+//qint32 DefaultRendererConnection::doPlay(const QString& arg)
+//{
+//    Q_UNUSED(arg)
 
-    qint32 retVal = UpnpSuccess;
+//    qint32 retVal = UpnpSuccess;
 
-    switch(writableRendererConnectionInfo()->transportState().type())
-    {
-    case HTransportState::PausedPlayback:
-    case HTransportState::Stopped:
-    case HTransportState::Transitioning:
-        if (m_mediaObject.currentTime() == m_mediaObject.totalTime())
-        {
-            if (m_mediaObject.isSeekable())
-            {
-                m_mediaObject.seek(0);
-            }
-        }
-        m_mediaObject.play();
-        break;
+//    switch(writableRendererConnectionInfo()->transportState().type())
+//    {
+//    case HTransportState::PausedPlayback:
+//    case HTransportState::Stopped:
+//    case HTransportState::Transitioning:
+//        if (m_mediaObject.currentTime() == m_mediaObject.totalTime())
+//        {
+//            if (m_mediaObject.isSeekable())
+//            {
+//                m_mediaObject.seek(0);
+//            }
+//        }
+//        m_mediaObject.play();
+//        break;
 
-    default:
-        retVal = HAvTransportInfo::TransitionNotAvailable;
-    }
+//    default:
+//        retVal = HAvTransportInfo::TransitionNotAvailable;
+//    }
 
-    return retVal;
-}
+//    return retVal;
+//}
 
-qint32 DefaultRendererConnection::doStop()
-{
-    m_mediaObject.stop();
-    writableRendererConnectionInfo()->setRelativeTimePosition(HDuration());
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doStop()
+//{
+//    m_mediaObject.stop();
+//    writableRendererConnectionInfo()->setRelativeTimePosition(HDuration());
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doPause()
-{
-    m_mediaObject.pause();
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doPause()
+//{
+//    m_mediaObject.pause();
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doSeek(const Herqq::Upnp::Av::HSeekInfo& seekInfo)
-{
-    Q_UNUSED(seekInfo)
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doSeek(const Herqq::Upnp::Av::HSeekInfo& seekInfo)
+//{
+//    Q_UNUSED(seekInfo)
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doNext()
-{
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doNext()
+//{
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doPrevious()
-{
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doPrevious()
+//{
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doSetResource(
-    const QUrl& resourceUri, Herqq::Upnp::Av::HObject* cdsObjectData)
-{
-    Q_UNUSED(resourceUri)
-    Q_UNUSED(cdsObjectData)
+//qint32 DefaultRendererConnection::doSetResource(
+//    const QUrl& resourceUri, Herqq::Upnp::Av::HObject* cdsObjectData)
+//{
+//    Q_UNUSED(resourceUri)
+//    Q_UNUSED(cdsObjectData)
 
-    if (m_mediaSource)
-    {
-        m_mediaObject.clear();
-    }
+//    if (m_mediaSource)
+//    {
+//        m_mediaObject.clear();
+//    }
 
-    m_mediaSource.reset(new MediaSource(resourceUri));
-    m_mediaObject.setCurrentSource(*m_mediaSource);
+//    m_mediaSource.reset(new MediaSource(resourceUri));
+//    m_mediaObject.setCurrentSource(*m_mediaSource);
 
-    if (!m_videoWidget)
-    {
-        if (m_mediaObject.hasVideo())
-        {
-            setupVideo();
-            m_videoWidget->show();
-        }
-        else
-        {
-            bool ok = connect(
-                &m_mediaObject, SIGNAL(hasVideoChanged(bool)),
-                this, SLOT(hasVideoChanged(bool)));
-            Q_ASSERT(ok); Q_UNUSED(ok)
-        }
-    }
+//    if (!m_videoWidget)
+//    {
+//        if (m_mediaObject.hasVideo())
+//        {
+//            setupVideo();
+//            m_videoWidget->show();
+//        }
+//        else
+//        {
+//            bool ok = connect(
+//                &m_mediaObject, SIGNAL(hasVideoChanged(bool)),
+//                this, SLOT(hasVideoChanged(bool)));
+//            Q_ASSERT(ok); Q_UNUSED(ok)
+//        }
+//    }
 
-    writableRendererConnectionInfo()->setRelativeTimePosition(HDuration());
+//    writableRendererConnectionInfo()->setRelativeTimePosition(HDuration());
 
-    return UpnpSuccess;
-}
+//    return UpnpSuccess;
+//}
 
-qint32 DefaultRendererConnection::doSelectPreset(const QString&)
-{
-    return UpnpSuccess;
-}
+//qint32 DefaultRendererConnection::doSelectPreset(const QString&)
+//{
+//    return UpnpSuccess;
+//}
 
-void DefaultRendererConnection::hasVideoChanged(bool b)
-{
-    if (!m_videoWidget && b && m_mediaObject.hasVideo())
-    {
-        setupVideo();
-        m_videoWidget->show();
-    }
-}
+//void DefaultRendererConnection::hasVideoChanged(bool b)
+//{
+//    if (!m_videoWidget && b && m_mediaObject.hasVideo())
+//    {
+//        setupVideo();
+//        m_videoWidget->show();
+//    }
+//}

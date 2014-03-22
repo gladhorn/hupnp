@@ -26,11 +26,8 @@
 #include <HUpnpCore/HUpnp>
 #include <HUpnpAv/HRendererConnection>
 
-#include <phonon/MediaObject>
-#include <phonon/VideoWidget>
-
-#include <QtGui/QLabel>
-#include <QtGui/QWidget>
+#include <QLabel>
+#include <QWidget>
 #include <QtGui/QPixmap>
 
 #include <QtCore/QPointer>

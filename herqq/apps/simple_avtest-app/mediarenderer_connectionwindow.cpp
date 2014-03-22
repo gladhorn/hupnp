@@ -55,7 +55,7 @@ bool isText(const QString& contentFormat)
 MediaRendererConnectionWindow::MediaRendererConnectionWindow(
     const QString& contentFormat, QNetworkAccessManager& nam, QWidget* parent) :
         QWidget(parent),
-            ui(new Ui::MediaRendererConnectionWindow()), // m_rendererConnection(0),
+            ui(new Ui::MediaRendererConnectionWindow()), m_rendererConnection(0),
             m_nam(nam)
 {
     ui->setupUi(this);
@@ -63,13 +63,13 @@ MediaRendererConnectionWindow::MediaRendererConnectionWindow(
 
     if (isAudio(contentFormat))
     {
-        m_rendererConnection = new DefaultRendererConnection(
-            DefaultRendererConnection::AudioOnly, ui->scrollAreaWidgetContents);
+//        m_rendererConnection = new DefaultRendererConnection(
+//            DefaultRendererConnection::AudioOnly, ui->scrollAreaWidgetContents);
     }
     else if (isVideo(contentFormat))
     {
-        m_rendererConnection = new DefaultRendererConnection(
-            DefaultRendererConnection::AudioVideo, ui->scrollAreaWidgetContents);
+//        m_rendererConnection = new DefaultRendererConnection(
+//            DefaultRendererConnection::AudioVideo, ui->scrollAreaWidgetContents);
     }
     else if (isImage(contentFormat))
     {
@@ -84,8 +84,8 @@ MediaRendererConnectionWindow::MediaRendererConnectionWindow(
     else if (contentFormat == "*" || contentFormat.isEmpty() ||
              contentFormat == "application/octet-stream")
     {
-        m_rendererConnection = new DefaultRendererConnection(
-            DefaultRendererConnection::Unknown, ui->scrollAreaWidgetContents);
+//        m_rendererConnection = new DefaultRendererConnection(
+//            DefaultRendererConnection::Unknown, ui->scrollAreaWidgetContents);
     }
     else
     {

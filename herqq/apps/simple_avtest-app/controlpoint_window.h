@@ -27,7 +27,7 @@
 #include <HUpnpCore/HClientDevice>
 
 #include <QtCore/QModelIndex>
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
 class DataItemDisplay;
 class ControlPointNavigator;

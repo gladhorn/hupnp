@@ -1,6 +1,6 @@
 TEMPLATE = app
 TARGET   = HUpnpAvSimpleTestApp
-QT      += network testlib xml multimedia
+QT      += network testlib xml widgets
 CONFIG  += warn_on
 
 INCLUDEPATH += \

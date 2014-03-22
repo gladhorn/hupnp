@@ -27,7 +27,7 @@
 
 #include <HUpnpAv/HUpnpAv>
 
-#include <QtGui/QWidget>
+#include <QWidget>
 #include <QtCore/QPointer>
 
 namespace Ui {

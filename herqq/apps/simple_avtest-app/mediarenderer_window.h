@@ -26,7 +26,7 @@
 #include <HUpnpCore/HDeviceHost>
 #include <HUpnpAv/HRendererConnectionManager>
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 
 class QNetworkAccessManager;
 

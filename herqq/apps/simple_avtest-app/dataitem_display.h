@@ -130,6 +130,8 @@ public:
 
     int rowCount   (const QModelIndex& parent = QModelIndex()) const;
     int columnCount(const QModelIndex& parent = QModelIndex()) const;
+
+    void reset();
 };
 
 #endif // DATAITEM_DISPLAY_H_

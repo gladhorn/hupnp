@@ -23,7 +23,7 @@
 #ifndef MEDIASERVER_WINDOW_H
 #define MEDIASERVER_WINDOW_H
 
-#include <QtGui/QMainWindow>
+#include <QMainWindow>
 #include <QtCore/QPointer>
 
 #include <HUpnpAv/HUpnpAv>

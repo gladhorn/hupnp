@@ -315,3 +315,9 @@ int DataItemDisplay::columnCount(const QModelIndex& /*parent*/) const
 {
     return m_columns.size();
 }
+
+void DataItemDisplay::reset()
+{
+    beginResetModel();
+    endResetModel();
+}
