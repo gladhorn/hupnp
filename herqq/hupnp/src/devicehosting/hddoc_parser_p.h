@@ -134,6 +134,9 @@ public:
         HActionInfo*);
 
     bool verifySpecVersion(const QDomElement&, QString* err = 0);
+
+private:
+    static QUrl parsedStringToUrl(const QString &string);
 };
 
 //

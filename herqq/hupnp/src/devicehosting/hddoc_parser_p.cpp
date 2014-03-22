@@ -278,7 +278,7 @@ QList<QUrl> HDocParser::parseIconList(const QDomElement& iconListElement)
     QDomElement iconElement = iconListElement.firstChildElement("icon");
     while(!iconElement.isNull())
     {
-        QUrl iconUrl = readElementValue("url", iconElement);
+        QUrl iconUrl = parsedStringToUrl(readElementValue("url", iconElement));
 
         QString iconUrlAsStr = iconUrl.toString();
         retVal.append(QUrl(iconUrlAsStr));
@@ -394,7 +394,7 @@ bool HDocParser::parseDeviceInfo(
         readElementValue("modelNumber"     , deviceElement);
 
     QUrl    modelUrl         =
-        readElementValue("modelURL"        , deviceElement);
+        parsedStringToUrl(readElementValue("modelURL"        , deviceElement));
 
     QString serialNumber     =
         readElementValue("serialNumber"    , deviceElement);
@@ -432,7 +432,7 @@ bool HDocParser::parseDeviceInfo(
         }
     }
 
-    QUrl presentationUrl(tmp);
+    QUrl presentationUrl = parsedStringToUrl(tmp);
 
     *info = HDeviceInfo(
         HResourceType(deviceType),
@@ -461,6 +461,14 @@ bool HDocParser::parseDeviceInfo(
     }
 
     return true;
+}
+
+QUrl HDocParser::parsedStringToUrl(const QString &string)
+{
+    QUrl url = QUrl(string);
+    if (url.scheme().isEmpty())
+        url = QUrl::fromLocalFile(string);
+    return url;
 }
 
 bool HDocParser::parseServiceInfo(
@@ -501,7 +509,7 @@ bool HDocParser::parseServiceInfo(
         return false;
     }
 
-    QUrl scpdUrl = readElementValue("SCPDURL", serviceDefinition, &wasDefined);
+    QUrl scpdUrl = parsedStringToUrl(readElementValue("SCPDURL", serviceDefinition, &wasDefined));
     if (!wasDefined)
     {
         m_lastError = InvalidDeviceDescriptionError;
@@ -513,8 +521,7 @@ bool HDocParser::parseServiceInfo(
         return false;
     }
 
-    QUrl controlUrl =
-        readElementValue("controlURL" , serviceDefinition, &wasDefined);
+    QUrl controlUrl = parsedStringToUrl(readElementValue("controlURL" , serviceDefinition, &wasDefined));
 
     if (!wasDefined)
     {
@@ -527,8 +534,7 @@ bool HDocParser::parseServiceInfo(
         return false;
     }
 
-    QUrl eventSubUrl =
-        readElementValue("eventSubURL", serviceDefinition, &wasDefined);
+    QUrl eventSubUrl = parsedStringToUrl(readElementValue("eventSubURL", serviceDefinition, &wasDefined));
 
     if (!wasDefined)
     {
